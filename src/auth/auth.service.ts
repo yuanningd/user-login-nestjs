@@ -59,7 +59,6 @@ export class AuthService {
   private async resetFailedLoginAttempts(user: User) {
     user.attempts = 0;
     user.lastAttempt = null;
-    user.isLocked = false;
     await user.save();
   }
 }
