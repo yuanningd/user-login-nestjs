@@ -1,6 +1,6 @@
 module.exports = {
   mongodb: {
-    url: 'mongodb://root:example@localhost:27018/myAppDatabase?authSource=admin',
+    url: process.env.MONGO_URI,
     options: {
       useNewUrlParser: true, // removes a deprecation warning when connecting
       useUnifiedTopology: true, // removes a deprecating warning when connecting
