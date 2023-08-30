@@ -78,14 +78,14 @@ describe('AuthService', () => {
       expect(result).toEqual({ accessToken: 'access_token' });
     });
 
-    it('should increase the attempts count and set lastAttempt', async () => {
+    it('should increase the attempts count and set firstAttempt', async () => {
       const mockUser = {
         isLocked: false,
         password: 'correct_password',
         username: 'username',
         _id: 'some_id',
         attempts: 0,
-        lastAttempt: null,
+        firstAttempt: null,
         save: jest.fn(),
       } as unknown as User;
 
@@ -96,7 +96,7 @@ describe('AuthService', () => {
       ).rejects.toThrow(UnauthorizedException);
 
       expect(mockUser.attempts).toBe(1);
-      expect(mockUser.lastAttempt).not.toBeNull();
+      expect(mockUser.firstAttempt).not.toBeNull();
       expect(mockUser.save).toHaveBeenCalled();
     });
 
@@ -107,7 +107,7 @@ describe('AuthService', () => {
         username: 'username',
         _id: 'some_id',
         attempts: 2,
-        lastAttempt: new Date(),
+        firstAttempt: new Date(),
         save: jest.fn(),
       } as unknown as User;
 

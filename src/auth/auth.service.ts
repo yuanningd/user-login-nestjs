@@ -40,16 +40,21 @@ export class AuthService {
 
   private async handleFailedLoginAttempt(user: User) {
     const now = new Date();
-    const fiveMinutesAgo = new Date(now.getTime() - 5 * 60 * 1000);
 
-    if (user.lastAttempt && user.lastAttempt > fiveMinutesAgo) {
-      user.attempts += 1;
-    } else {
+    // If firstAttempt is not set or if it's older than 5 minutes,
+    // reset it and the attempts counter
+    if (
+      !user.firstAttempt ||
+      now.getTime() - user.firstAttempt.getTime() > 5 * 60 * 1000
+    ) {
+      user.firstAttempt = now;
       user.attempts = 1;
+    } else {
+      // Otherwise, increment the attempts counter
+      user.attempts += 1;
     }
 
-    user.lastAttempt = now;
-
+    // Lock the user if they've reached 3 attempts within 5 minutes
     if (user.attempts >= 3) {
       user.isLocked = true;
     }
@@ -58,7 +63,7 @@ export class AuthService {
   }
   private async resetFailedLoginAttempts(user: User) {
     user.attempts = 0;
-    user.lastAttempt = null;
+    user.firstAttempt = null;
     await user.save();
   }
 }

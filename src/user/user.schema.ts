@@ -13,7 +13,7 @@ export class User extends Document {
   attempts: number;
 
   @Prop()
-  lastAttempt: Date;
+  firstAttempt: Date;
 
   @Prop({ default: false })
   isLocked: boolean;

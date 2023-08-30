@@ -5,7 +5,7 @@ module.exports = {
       username: 'test-user',
       password: 'password', // Make sure to hash the password before storing it
       attempts: 0,
-      lastAttempt: null,
+      firstAttempt: null,
       isLocked: false,
       createdAt: new Date(),
       updatedAt: new Date(),

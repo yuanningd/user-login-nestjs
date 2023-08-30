@@ -37,7 +37,6 @@ describe('AuthController', () => {
         username: 'test-user',
         password: 'password',
         attempts: 0,
-        lastAttempt: null,
         isLocked: false,
       });
 
