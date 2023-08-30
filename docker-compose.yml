@@ -12,7 +12,7 @@ services:
       - MONGO_URI=mongodb://root:example@mongo:27017/myAppDatabase?authSource=admin
 
   mongo:
-    image: mongo:latest
+    image: mongo:6.0
     container_name: my-mongo
     environment:
       - MONGO_INITDB_DATABASE=myAppDatabase

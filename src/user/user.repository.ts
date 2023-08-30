@@ -8,6 +8,6 @@ export class UserRepository {
   constructor(@InjectModel(User.name) private userModel: Model<User>) {}
 
   async findByUsername(username: string): Promise<User> {
-    return await this.userModel.findOne({ username: username }).exec();
+    return await this.userModel.findOne({ username }).exec();
   }
 }
