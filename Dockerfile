@@ -16,11 +16,14 @@ FROM node:18-alpine
 
 WORKDIR /usr/src/app
 
-COPY package*.json migrate-mongo-config.js ./
-COPY migrations ./migrations
+COPY package*.json ./
 
 # Install only production dependencies
 RUN npm install --only=production
+
+# Copy files for data migration
+COPY migrate-mongo-config.js ./
+COPY migrations ./migrations
 
 # Copy compiled app from the builder
 COPY --from=builder /usr/src/app/dist ./dist

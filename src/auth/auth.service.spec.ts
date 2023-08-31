@@ -35,9 +35,9 @@ describe('AuthService', () => {
     it('should throw UnauthorizedException if user not found', async () => {
       mockUserService.getByUsername.mockReturnValue(null);
 
-      await expect(service.signIn('username', 'password')).rejects.toThrow(
-        UnauthorizedException,
-      );
+      await expect(
+        service.signIn({ username: 'test-user', password: 'password' }),
+      ).rejects.toThrow(UnauthorizedException);
     });
 
     it('should throw ForbiddenException if user is locked', async () => {
@@ -45,9 +45,9 @@ describe('AuthService', () => {
         isLocked: true,
       });
 
-      await expect(service.signIn('username', 'password')).rejects.toThrow(
-        ForbiddenException,
-      );
+      await expect(
+        service.signIn({ username: 'test-user', password: 'password' }),
+      ).rejects.toThrow(ForbiddenException);
     });
 
     it('should throw UnauthorizedException if password is incorrect', async () => {
@@ -58,7 +58,7 @@ describe('AuthService', () => {
       } as unknown as User);
 
       await expect(
-        service.signIn('username', 'wrong_password'),
+        service.signIn({ username: 'test-user', password: 'wrong_password' }),
       ).rejects.toThrow(UnauthorizedException);
     });
 
@@ -73,7 +73,10 @@ describe('AuthService', () => {
 
       mockJwtService.sign.mockReturnValue('access_token');
 
-      const result = await service.signIn('username', 'correct_password');
+      const result = await service.signIn({
+        username: 'test-user',
+        password: 'correct_password',
+      });
 
       expect(result).toEqual({ accessToken: 'access_token' });
     });
@@ -92,9 +95,8 @@ describe('AuthService', () => {
       mockUserService.getByUsername.mockReturnValue(mockUser);
 
       await expect(
-        service.signIn('username', 'wrong_password'),
+        service.signIn({ username: 'test-user', password: 'wrong_password' }),
       ).rejects.toThrow(UnauthorizedException);
-
       expect(mockUser.attempts).toBe(1);
       expect(mockUser.firstAttempt).not.toBeNull();
       expect(mockUser.save).toHaveBeenCalled();
@@ -114,7 +116,7 @@ describe('AuthService', () => {
       mockUserService.getByUsername.mockReturnValue(mockUser);
 
       await expect(
-        service.signIn('username', 'wrong_password'),
+        service.signIn({ username: 'test-user', password: 'wrong_password' }),
       ).rejects.toThrow(UnauthorizedException);
 
       expect(mockUser.attempts).toBe(3);

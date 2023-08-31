@@ -6,6 +6,7 @@ import {
 import { UserService } from '../user/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { User } from '../user/user.schema';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
     private jwtService: JwtService,
   ) {}
 
-  async signIn(username: string, password: string) {
+  async signIn({ username, password }: LoginDto) {
     const user = await this.userService.getByUsername(username);
     if (!user) {
       throw new UnauthorizedException('Invalid username or password.');
@@ -54,7 +55,6 @@ export class AuthService {
       user.attempts += 1;
     }
 
-    // Lock the user if they've reached 3 attempts within 5 minutes
     if (user.attempts >= 3) {
       user.isLocked = true;
     }

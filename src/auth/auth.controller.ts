@@ -9,7 +9,6 @@ export class AuthController {
   @Post('login')
   @HttpCode(200)
   sighIn(@Body() loginDto: LoginDto) {
-    const { username, password } = loginDto;
-    return this.authService.signIn(username, password);
+    return this.authService.signIn(loginDto);
   }
 }
