@@ -6,6 +6,7 @@ describe('UserService', () => {
   let userService: UserService;
   const mockUserRepository = {
     findByUsername: jest.fn(),
+    create: jest.fn(),
   };
 
   beforeEach(async () => {
@@ -32,6 +33,17 @@ describe('UserService', () => {
       expect(mockUserRepository.findByUsername).toHaveBeenCalledWith(
         'test-user',
       );
+      expect(result).toEqual(mockUser);
+    });
+  });
+  describe('createUser', () => {
+    it('should create a user', async () => {
+      const mockUser = { id: 1, username: 'user' };
+      mockUserRepository.create.mockReturnValue(mockUser);
+      const result = await userService.create({
+        username: 'user',
+        password: 'p',
+      });
       expect(result).toEqual(mockUser);
     });
   });
